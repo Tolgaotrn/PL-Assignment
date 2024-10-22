@@ -2,6 +2,9 @@ package proj10;
 import java.util.Scanner;
 import java.util.List;
 import org.hibernate.query.Query;
+
+import com.mysql.cj.xdevapi.Schema;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -28,21 +31,22 @@ public class Gestor {
 		Utilizador u= new Utilizador();
 
 		System.out.print("Username:");
-		String username = scanner.nextLine();
+		String username = scanner.next();
 		System.out.print("\n");
 		System.out.print("Nome:");
-		scanner.nextLine();
-		String nome = scanner.nextLine();
+		String nome = scanner.next();
 		System.out.print("Password:");
-		String password = scanner.nextLine();
+		String password = scanner.next();
 		System.out.print("\n");
 
+
+		
 		System.out.print("Telemovel:");
-		String telemovel = scanner.nextLine();
+		String telemovel = scanner.next();
 		System.out.print("\n");
 
 		System.out.print("Localizacao:");
-		String localizacao = scanner.nextLine();
+		String localizacao = scanner.next();
 		System.out.print("\n");
 
 		u.setNome(nome);
