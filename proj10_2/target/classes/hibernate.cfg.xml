@@ -21,5 +21,10 @@
  <mapping class="proj10.Utilizador"/>
  <mapping class="proj10.Hospital"/>
 <mapping class="proj10.Recursos"/>
+<mapping class="proj10.Abrigo"/>
+<mapping class="proj10.BancoAlimentos"/>
+<mapping class="proj10.CentroTrocaRoupa"/>
+<mapping class="proj10.CozinhaComunitaria"/>
+
  </session-factory>
 </hibernate-configuration>

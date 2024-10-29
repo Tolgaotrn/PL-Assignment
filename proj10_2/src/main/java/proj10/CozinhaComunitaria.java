@@ -1,15 +1,18 @@
 package proj10;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-@Entity
-@Table(name = "Hospitais")
-public class Hospital extends Recursos {
-    @Column(name = "especialidades")
-    private String especialidades;
 
-    @Column(name = "vagas")
-    private int vagas;
+
+@Entity
+@Table(name = "Cozinhas_Comunitarias")
+public class CozinhaComunitaria extends Recursos {
+    @Column(name = "tipo_comida")
+    private String tipoComida;
+
+    @Column(name = "capacidade")
+    private int capacidade;
 
     @Column(name = "custos_acrescidos")
     private String custosAcrescidos;
@@ -17,36 +20,30 @@ public class Hospital extends Recursos {
     @Column(name = "informacao_extra")
     private String informacaoExtra;
 
-    // IMPLEMENTAR GETTERS E SETTERS
-    public String getEspecialidades() {
-        return especialidades;
+    // ADICIONAR GETTERS E SETTERS
+    public String getTipoComida() {
+        return tipoComida;
     }
-
-    public void setEspecialidades(String especialidades) {
-        this.especialidades = especialidades;
+    public void setTipoComida(String tipoComida) {
+        this.tipoComida = tipoComida;
     }
-
-    public int getVagas() {
-        return vagas;
+    public int getCapacidade() {
+        return capacidade;
     }
-
-    public void setVagas(int vagas) {
-        this.vagas = vagas;
+    public void setCapacidade(int capacidade) {
+        this.capacidade = capacidade;
     }
-
     public String getCustosAcrescidos() {
         return custosAcrescidos;
     }
-
     public void setCustosAcrescidos(String custosAcrescidos) {
         this.custosAcrescidos = custosAcrescidos;
     }
-
     public String getInformacaoExtra() {
         return informacaoExtra;
     }
-
     public void setInformacaoExtra(String informacaoExtra) {
         this.informacaoExtra = informacaoExtra;
     }
 }
+

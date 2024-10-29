@@ -2,12 +2,11 @@ package proj10;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-@Entity
-@Table(name = "Hospitais")
-public class Hospital extends Recursos {
-    @Column(name = "especialidades")
-    private String especialidades;
 
+
+@Entity
+@Table(name = "Abrigos")
+public class Abrigo extends Recursos {
     @Column(name = "vagas")
     private int vagas;
 
@@ -17,36 +16,28 @@ public class Hospital extends Recursos {
     @Column(name = "informacao_extra")
     private String informacaoExtra;
 
-    // IMPLEMENTAR GETTERS E SETTERS
-    public String getEspecialidades() {
-        return especialidades;
-    }
-
-    public void setEspecialidades(String especialidades) {
-        this.especialidades = especialidades;
-    }
-
+    // ADICIONAR GETTERS E SETTERS
     public int getVagas() {
         return vagas;
     }
-
     public void setVagas(int vagas) {
         this.vagas = vagas;
     }
-
     public String getCustosAcrescidos() {
         return custosAcrescidos;
     }
-
     public void setCustosAcrescidos(String custosAcrescidos) {
         this.custosAcrescidos = custosAcrescidos;
     }
-
     public String getInformacaoExtra() {
         return informacaoExtra;
     }
-
     public void setInformacaoExtra(String informacaoExtra) {
         this.informacaoExtra = informacaoExtra;
     }
+
+    
 }
+
+
+
