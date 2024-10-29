@@ -5,8 +5,8 @@ public class main {
 	public static void main(String[] args) {
 		Gestor gestor = new Gestor();
 		Scanner ler = new Scanner(System.in);
-		gestor.setup();
-		int opcao = -1;
+		 gestor.setup();
+		 int opcao = -1;
 		System.out.println("-----------------------------------"+ "\n"+ "\n");
         System.out.println("--------------- À mão ----------------");
         System.out.println("| Recursos essenciais ao seu alcance |");
@@ -15,23 +15,19 @@ public class main {
 			System.out.println("-------------------");
 			System.out.println("|	Menu	  |");
 			System.out.println(  "-------------------");
-			System.out.println("1 - Login");
-			 System.out.println("2 - Criar utilizador");
-			 System.out.println("3 - Modo anónimo");
-			 System.out.println("4 - Administrador");
+			 System.out.println("1 - Criar Utilizador");
+			 System.out.println("2 - Ver hospitais");
+			 System.out.println("3 - Administrador");
 			 System.out.print("0 - Sair" +"\n" + "Opção: ");
 			 opcao = ler.nextInt();
 			 switch (opcao) {
 				case 1:
-					gestor.login();
-					break;
-				case 2:
 					gestor.createUser();
 					break;
-				case 3:
-					gestor.menuAnonimo(2);
+				case 2:
+					gestor.read(2);
 					break;
-				case 4:
+				case 3:
 					gestor.admin();
 					break;
 				case 0:
