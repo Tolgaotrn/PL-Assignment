@@ -1,48 +1,23 @@
 package proj10;
-
-import jakarta.persistence.*;
-import java.io.Serializable;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 @Entity
-@Table(name = "hospitais")
-public class Hospital implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_hospital")
-    private int idHospital;
-
-    @ManyToOne
-    @JoinColumn(name = "id_recurso", nullable = false)
-    private Recursos recursos;
-
-    @Column(name = "especialidades", columnDefinition = "TEXT")
+@Table(name = "Hospitais")
+public class Hospital extends Recursos {
+    @Column(name = "especialidades")
     private String especialidades;
 
     @Column(name = "vagas")
     private int vagas;
 
-    @Column(name = "custos_acrescidos", length = 255)
+    @Column(name = "custos_acrescidos")
     private String custosAcrescidos;
 
+    @Column(name = "informacao_extra")
+    private String informacaoExtra;
 
-
-    public int getIdHospital() {
-        return idHospital;
-    }
-
-    public void setIdHospital(int idHospital) {
-        this.idHospital = idHospital;
-    }
-
-    public Recursos getRecurso() {
-        return recursos;
-    }
-
-    public void setRecurso(Recursos recurso) {
-        this.recursos = recurso;
-    }
-
+    // IMPLEMENTAR GETTERS E SETTERS
     public String getEspecialidades() {
         return especialidades;
     }
@@ -66,5 +41,12 @@ public class Hospital implements Serializable {
     public void setCustosAcrescidos(String custosAcrescidos) {
         this.custosAcrescidos = custosAcrescidos;
     }
-}
 
+    public String getInformacaoExtra() {
+        return informacaoExtra;
+    }
+
+    public void setInformacaoExtra(String informacaoExtra) {
+        this.informacaoExtra = informacaoExtra;
+    }
+}
