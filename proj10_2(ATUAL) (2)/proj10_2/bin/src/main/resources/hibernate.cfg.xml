@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+ "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+ "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory>
+ <!-- Database connection settings -->
+ <!-- Set the Driver Class -->
+ <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+ <!-- Set URL -->
+ <property name="connection.url">jdbc:mysql://localhost:3306/amao</property>
+ <!-- Set the user name -->
+ <property name="connection.username">root</property>
+ <!-- Set the password write the pwd you choose when installing MySQL -->
+ <property name="connection.password">zezinho</property>
+ <!-- Echo all executed SQL to stdout -->
+ <property name="show_sql">true</property>
+<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+<property name="hibernate.hbm2dd1.auto">update</property>
+ <!-- Set the annotated classes (inform the complete namespace) -->
+ <mapping class="proj10.Utilizador"/>
+ <mapping class="proj10.Hospital"/>
+<mapping class="proj10.Recursos"/>
+ </session-factory>
+</hibernate-configuration>
