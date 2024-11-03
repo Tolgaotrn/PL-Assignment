@@ -129,7 +129,7 @@ public class Gestor {
         validarUsername(username);
         System.out.print("\n");
 		String password;
-		//do {
+		//do { //nao está a funcionar corretamente mas o professor disse que não era totalmente necessário
         System.out.print("Password:");
         password = scanner.next();
         System.out.print("\n");
@@ -137,7 +137,7 @@ public class Gestor {
         
         System.out.print("Telemovel:");
         String telemovel = scanner.next();
-        //validarTelemovel(telemovel);
+        //validarTelemovel(telemovel); //nao está a funcionar corretamente mas o professor disse que não era totalmente necessário
         System.out.print("\n");
 		u.setNome(nome);
         u.setUsername(username);
@@ -249,7 +249,6 @@ public class Gestor {
 					}
 					break;
 				default:
-					//mostrar recurso default -> ACABAR
 
 					break;
 			}
@@ -706,38 +705,28 @@ public class Gestor {
 	public void doar(int idUtilizador) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		System.out.println("Quanto quer doar?");
+	
+		System.out.println("Quanto quer doar? (€)");
 		int quantidade = scanner.nextInt();
+	
 		System.out.println("Para que recurso quer doar?");
 		mostrarRecursos();
 		System.out.print("Id do recurso: ");
 		int idRecurso = scanner.nextInt();
+	
+		Recursos recurso = session.get(Recursos.class, idRecurso);
+	
 		Donation doacao = new Donation();
-		/*
-		 * @GeneratedValue(strategy = GenerationType.IDENTITY)
-			private int id;
-
-			@Column(name = "donor_name", nullable = false)
-			private String donorName;
-
-			@Column(name = "amount", nullable = false)
-			private double amount;
-
-			@Column(name = "date", nullable = false)
-			private Date date;
-		 */
 		doacao.setDonorid(idUtilizador);
 		doacao.setAmount(quantidade);
 		doacao.setDate(new java.util.Date());
+		doacao.setRecurso(recurso); 
 		session.persist(doacao);
-
-
-
-		
 		session.getTransaction().commit();
 		session.close();
-
+		System.out.println("Doação realizada com sucesso! Obrigado pelo seu contributo:)");
 	}
+	
 	private void mostrarFavoritos(int idUtilizador) {
 		Session session = sessionFactory.openSession();
 		Query<Favorito> query = session.createQuery("FROM Favorito WHERE idUtilizador = :idUtilizador", Favorito.class);
@@ -777,8 +766,8 @@ public class Gestor {
 		favorito.setDataFavorito(new java.util.Date());
 	
 		session.persist(favorito);
-		session.getTransaction().commit(); // Comita a transação
-		session.close(); // Fecha a sessão
+		session.getTransaction().commit(); 
+		session.close();
 	
 		System.out.println("Recurso adicionado aos favoritos com sucesso!");
 	}
