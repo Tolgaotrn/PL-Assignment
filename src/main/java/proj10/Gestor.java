@@ -40,47 +40,102 @@ public class Gestor {
 		 
 		
 
-	public void exit() {
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		session.getTransaction().commit();
-		session.close();
-	}
-	public void criarUtilizador() {
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		System.out.println("\n" + "--------------------");
+	private void validarNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome não pode estar vazio");
+        }
+        if (nome.length() < 2) {
+            throw new IllegalArgumentException("O nome deve ter pelo menos 2 caracteres");
+        }
+        if (!nome.matches("^[a-zA-ZÀ-ú\\s]+$")) {
+            throw new IllegalArgumentException("O nome deve conter apenas letras");
+        }
+    }
+
+    private void validarUsername(String username) {
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("O username não pode estar vazio");
+        }
+        if (username.length() < 3) {
+            throw new IllegalArgumentException("O username deve ter pelo menos 3 caracteres");
+        }
+        if (!username.matches("^[a-zA-Z0-9]+$")) {
+            throw new IllegalArgumentException("O username deve conter apenas letras e números");
+        }
+    }
+
+    private void validarPassword(String password) {
+        if (password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("A password não pode estar vazia");
+        }
+        if (password.length() < 6) {
+            throw new IllegalArgumentException("A password deve ter pelo menos 6 caracteres");
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            throw new IllegalArgumentException("A password deve conter pelo menos uma letra maiúscula");
+        }
+        if (!password.matches(".*[a-z].*")) {
+            throw new IllegalArgumentException("A password deve conter pelo menos uma letra minúscula");
+        }
+        if (!password.matches(".*[0-9].*")) {
+            throw new IllegalArgumentException("A password deve conter pelo menos um número");
+        }
+    }
+
+    private void validarTelemovel(String telemovel) {
+        if (telemovel == null || telemovel.trim().isEmpty()) {
+            throw new IllegalArgumentException("O número de telemóvel não pode estar vazio");
+        }
+        if (!telemovel.matches("^[0-9]{9}$")) {
+            throw new IllegalArgumentException("O número de telemóvel deve ter 9 dígitos numéricos");
+        }
+    }
+
+    public void exit() {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public void criarUtilizador() {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        System.out.println("\n" + "--------------------");
         System.out.println("| Criar utilizador |");
-        System.out.println(  "--------------------"+ "\n");
-		Utilizador u= new Utilizador();
-		System.out.print("Nome:");
-		String nome = scanner.next();
-		System.out.print("\n");
-	
-		System.out.print("Username:");
-		String username = scanner.next();
-		System.out.print("\n");
-		
-		System.out.print("Password:");
-		String password = scanner.next();
-		System.out.print("\n");
+        System.out.println("--------------------" + "\n");
+        
+        Utilizador u = new Utilizador();
+        
+        System.out.print("Nome:");
+        String nome = scanner.next();
+        validarNome(nome);
+        System.out.print("\n");
+    
+        System.out.print("Username:");
+        String username = scanner.next();
+        validarUsername(username);
+        System.out.print("\n");
+        
+        System.out.print("Password:");
+        String password = scanner.next();
+        validarPassword(password);
+        System.out.print("\n");
+        
+        System.out.print("Telemovel:");
+        String telemovel = scanner.next();
+        validarTelemovel(telemovel);
+        System.out.print("\n");
 
-
-
-		
-		System.out.print("Telemovel:");
-		String telemovel = scanner.next();
-		System.out.print("\n");
-
-		u.setNome(nome);
-		u.setUsername(username);
-		u.setPassword(encriptar(password));
-		u.setTelemovel(telemovel);
-		u.setTipoUtilizador("utilizador");
-		session.persist(u);
-		session.getTransaction().commit();
-		session.close();
-	}
+        u.setNome(nome);
+        u.setUsername(username);
+        u.setPassword(encriptar(password));
+        u.setTelemovel(telemovel);
+        u.setTipoUtilizador("utilizador");
+        session.persist(u);
+        session.getTransaction().commit();
+        session.close();
+    }
 	//ENCRIPTAR PASSWORD
 	public static String encriptar(String password) {
         try {
@@ -220,13 +275,13 @@ public class Gestor {
 					eliminarRecurso();
 					break;
 				case 7:
-					mostrarTipo();
+					//mostrarTipo();
 					break;
 				case 8:
-					adicionarTipo();
+				//addDefaultType();
 					break;
 				case 9:
-					eliminarTipo();
+					//eliminarTipo();
 					break;
 
 
@@ -298,7 +353,7 @@ public class Gestor {
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
 				System.out.println("\n" + "Tipo de recurso:");
-				mostrarTipo();
+				//mostrarTipo();
 				System.out.print("Id do tipo de recurso: ");
 				int idTipo = scanner.nextInt();
 				Tipo tipo = session.get(Tipo.class, idTipo);
@@ -577,7 +632,7 @@ public class Gestor {
 }
 private void pesquisarRecurso() {
     System.out.print("Tipo de recurso: ");
-    mostrarTipo();
+    //mostrarTipo();
     System.out.print("Id do tipo de recurso: ");
     int idTipo = scanner.nextInt();
     System.out.print("Cidade: ");
@@ -614,31 +669,54 @@ private void pesquisarRecurso() {
 }
 
 public void mostrarTipo() {
-	System.out.println("\n" + "-------------------------");
-	System.out.println("| Lista de tipos |");
-	System.out.println(  "-------------------------");
-	Session session = sessionFactory.openSession();
-	Query<Tipo> query = session.createQuery("FROM Tipo", Tipo.class);
-	List<Tipo> tipos = query.getResultList();
-	for (Tipo tipo : tipos) {
-		System.out.println("Id: " + tipo.getIdTipo());
-		System.out.println("Tipo: " + tipo.getTipo());
-		System.out.println("-------------------------------");
-	}
-	session.close();
-			
+    System.out.println("\n-------------------------");
+    System.out.println("| Lista de tipos |");
+    System.out.println("-------------------------");
+    Session session = sessionFactory.openSession();
+    Query<Tipo> query = session.createQuery("FROM Tipo", Tipo.class);
+    List<Tipo> tipos = query.getResultList();
+
+    for (Tipo tipo : tipos) {
+        System.out.println("Id: " + tipo.getIdTipo());
+        System.out.println("Tipo: " + tipo.getTipo());
+        
+        if (tipo instanceof DefaultType) {
+            DefaultType defaultType = (DefaultType) tipo;
+            System.out.println("Name: " + defaultType.getName());
+            System.out.println("Location: " + defaultType.getLocation());
+            System.out.println("Contact: " + defaultType.getContact());
+            System.out.println("Extra Info: " + defaultType.getExtraInfo());
+        }
+
+        System.out.println("-------------------------------");
+    }
+
+    session.close();
 }
-public void adicionarTipo() {
-	Session session = sessionFactory.openSession();
-	session.beginTransaction();
-	System.out.print("Tipo: ");
-	String tipo = scanner.next();
-	Tipo t = new Tipo();
-	t.setTipo(tipo);
-	session.persist(t);
-	session.getTransaction().commit();
-	session.close();
+public void addDefaultType() { //new type class
+    Session session = sessionFactory.openSession();
+    session.beginTransaction();
+    System.out.print("New type: ");
+    String type = scanner.next();
+    System.out.print("Name: ");
+    String name = scanner.next();
+    System.out.print("Location: ");
+    String location = scanner.next();
+    System.out.print("Contact: ");
+    String contact = scanner.next();
+    System.out.print("Extra Info: ");
+    String extraInfo = scanner.next();
+    DefaultType defaultType = new DefaultType();
+    defaultType.setTipo(type);   
+    defaultType.setName(name);
+    defaultType.setLocation(location);
+    defaultType.setContact(contact);
+    defaultType.setExtraInfo(extraInfo);
+    session.persist(defaultType);
+    session.getTransaction().commit();
+    session.close();
 }
+
 public void eliminarTipo() {
 	mostrarTipo();
 	Session session = sessionFactory.openSession();
