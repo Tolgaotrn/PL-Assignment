@@ -7,6 +7,9 @@ import java.util.Base64;
 import java.util.List;
 import org.hibernate.query.Query;
 import com.mysql.cj.xdevapi.Schema;
+
+import jakarta.persistence.Column;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -36,10 +39,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 public class Gestor {
  SessionFactory sessionFactory;
  Scanner scanner = new Scanner(System.in);
-
-		 
-		
-
 	private void validarNome(String nome) {
         if (nome == null || nome.trim().isEmpty()) {
             throw new IllegalArgumentException("O nome não pode estar vazio");
@@ -52,52 +51,67 @@ public class Gestor {
         }
     }
 
-    private void validarUsername(String username) {
-        if (username == null || username.trim().isEmpty()) {
-            throw new IllegalArgumentException("O username não pode estar vazio");
-        }
-        if (username.length() < 3) {
-            throw new IllegalArgumentException("O username deve ter pelo menos 3 caracteres");
-        }
-        if (!username.matches("^[a-zA-Z0-9]+$")) {
-            throw new IllegalArgumentException("O username deve conter apenas letras e números");
-        }
-    }
-
-    private void validarPassword(String password) {
-        if (password == null || password.trim().isEmpty()) {
-            throw new IllegalArgumentException("A password não pode estar vazia");
-        }
-        if (password.length() < 6) {
-            throw new IllegalArgumentException("A password deve ter pelo menos 6 caracteres");
-        }
-        if (!password.matches(".*[A-Z].*")) {
-            throw new IllegalArgumentException("A password deve conter pelo menos uma letra maiúscula");
-        }
-        if (!password.matches(".*[a-z].*")) {
-            throw new IllegalArgumentException("A password deve conter pelo menos uma letra minúscula");
-        }
-        if (!password.matches(".*[0-9].*")) {
-            throw new IllegalArgumentException("A password deve conter pelo menos um número");
-        }
-    }
-
-    private void validarTelemovel(String telemovel) {
-        if (telemovel == null || telemovel.trim().isEmpty()) {
-            throw new IllegalArgumentException("O número de telemóvel não pode estar vazio");
-        }
-        if (!telemovel.matches("^[0-9]{9}$")) {
-            throw new IllegalArgumentException("O número de telemóvel deve ter 9 dígitos numéricos");
-        }
-    }
-
+    private boolean validarUsername(String username) {
+		boolean valid = false;
+		if (username == null || username.trim().isEmpty()) {
+			System.out.println("O username não pode estar vazio");
+			return valid = false;
+		}else if (username.length() < 3) {
+			System.out.println("O username deve ter pelo menos 3 caracteres");
+			return valid = false;
+		}else if (!username.matches("^[a-zA-Z0-9]+$")) {
+			System.out.println("O username deve conter apenas letras e números");
+			return valid = false;
+		}else
+		{
+			return valid= true;
+		}
+	}
+   
+	   private boolean validarPassword(String password) 
+	   {
+		   boolean valid = false;
+		   if (password == null || password.trim().isEmpty()) {
+			   System.out.println("A password não pode estar vazia");
+			   return valid=false;
+		   }else if (password.length() < 6) {
+			   System.out.println("A password deve ter pelo menos 6 caracteres");
+			   return valid=false;
+		   }else if (!password.matches(".[A-Z].")) {
+			   System.out.println("A password deve conter pelo menos uma letra maiúscula");
+			   return valid=false;
+		   }else if (!password.matches(".[a-z].")) {
+			   System.out.println("A password deve conter pelo menos uma letra minúscula");
+			   return valid=false;
+		   }else if (!password.matches(".[0-9].")) {
+			   System.out.println("A password deve conter pelo menos um número");
+			   return valid=false;
+		   }else 
+		   {
+			   return valid=true;
+		   }
+   
+	   }
+   
+	   private boolean validarTelemovel(String telemovel) {
+		   boolean valid= false;
+		   if (telemovel == null || telemovel.trim().isEmpty()) {
+			   System.out.println("O número de telemóvel não pode estar vazio");
+			   return valid= false;
+		   }else if (!telemovel.matches("^[0-9]{9}$")) {
+			   System.out.println("O número de telemóvel deve ter 9 dígitos numéricos");
+			   return valid= false;
+		   }else
+		   {
+			   return valid = true;
+		   }
+	   }
     public void exit() {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.getTransaction().commit();
         session.close();
     }
-
     public void criarUtilizador() {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
@@ -116,18 +130,18 @@ public class Gestor {
         String username = scanner.next();
         validarUsername(username);
         System.out.print("\n");
-        
+		String password;
+		do {
         System.out.print("Password:");
-        String password = scanner.next();
-        validarPassword(password);
+        password = scanner.next();
         System.out.print("\n");
+		} while (validarPassword(password) == false);
         
         System.out.print("Telemovel:");
         String telemovel = scanner.next();
         validarTelemovel(telemovel);
         System.out.print("\n");
-
-        u.setNome(nome);
+		u.setNome(nome);
         u.setUsername(username);
         u.setPassword(encriptar(password));
         u.setTelemovel(telemovel);
@@ -135,6 +149,7 @@ public class Gestor {
         session.persist(u);
         session.getTransaction().commit();
         session.close();
+        
     }
 	//ENCRIPTAR PASSWORD
 	public static String encriptar(String password) {
@@ -146,7 +161,6 @@ public class Gestor {
             throw new RuntimeException("Error: SHA-256 algorithm not found.", e);
 		}
     }
-
 	public void setup() {
 		final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
 				 .configure() // configures settings from hibernate.cfg.xml
@@ -161,6 +175,9 @@ public class Gestor {
 		Session session = sessionFactory.openSession();
 		Query<Recursos> query = session.createQuery("FROM Recursos", Recursos.class);
 		List<Recursos> recursos = query.getResultList();
+		if (recursos.size() == 0) {
+			System.out.println("Nenhum recurso encontrado.");
+		} else {
 		System.out.println("\n" + "-------------------------");
 		System.out.println("| Lista de recursos |");
 		System.out.println(  "-------------------------");
@@ -234,13 +251,17 @@ public class Gestor {
 					}
 					break;
 				default:
+					//mostrar recurso default -> ACABAR
+
 					break;
 			}
-			}	
+			}
+		}
 		}
     public void admin() {
 		int opcao = -1;
 		while (opcao != 0) {
+			try {
 			System.out.println("\n" + "-------------------------");
 			System.out.println("| Menu de administrador |");
 			System.out.println(  "-------------------------");
@@ -275,13 +296,13 @@ public class Gestor {
 					eliminarRecurso();
 					break;
 				case 7:
-					//mostrarTipo();
+					mostrarTipo();
 					break;
 				case 8:
-				//addDefaultType();
+					addDefaultType();
 					break;
 				case 9:
-					//eliminarTipo();
+					eliminarTipo();
 					break;
 
 
@@ -291,25 +312,38 @@ public class Gestor {
 					System.out.println("Opção inválida");
 					break;
 			}
+		} catch (Exception e) {
+			System.out.println("Erro: " + e.getMessage());
 		}
-    }
-	
+		}
+		
+    }	
 	private void atualizaUser() {
 		mostrarUtilizadores();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
+		Utilizador utilizador = new Utilizador();
+		try {	//validação de erro ao atualizar utilizador
 		System.out.print("Id do utilizador a atualizar: ");
 		int id = scanner.nextInt();
-		Utilizador utilizador = session.get(Utilizador.class, id);
-
+		utilizador = session.get(Utilizador.class, id);
+		} catch (Exception e) {
+			System.out.println("Erro: " + e.getMessage()); //validação de erro ao inserir id do utilizador
+		}
+		try {
 		System.out.print("Nome: ");
 		String nome = scanner.next();
 		utilizador.setNome(nome);
-
-
+		} catch (Exception e) {
+			System.out.println("Erro: " + e.getMessage()); //validação de erro ao atualizar nome do utilizador
+		}
+		try {
 		System.out.print("Telemóvel: ");
 		String telemovel = scanner.next();
 		utilizador.setTelemovel(telemovel);
+		} catch (Exception e) {
+			System.out.println("Erro: " + e.getMessage()); //validação de erro ao atualizar telemovel
+		}
 
 
 		
@@ -317,11 +351,15 @@ public class Gestor {
 		session.getTransaction().commit();
 		System.out.println("Utilizador atualizado com sucesso!");
 		session.close();
-		}	
+		}
 	private void mostrarUtilizadores() {
 		Session session = sessionFactory.openSession();
 		Query<Utilizador> query = session.createQuery("FROM Utilizador", Utilizador.class);
 		List<Utilizador> utilizadores = query.getResultList();
+		if (utilizadores.size() == 0) { //validação se existirem utilizadores na base de dados
+			System.out.println("Nenhum utilizador encontrado.");
+			
+		} else {
 		System.out.println("\n" + "-------------------------");
 		System.out.println("| Lista de utilizadores |");
 		System.out.println(  "-------------------------");
@@ -336,6 +374,7 @@ public class Gestor {
 		}
 		System.out.print("\n");
 		session.close();
+		}
 	}
 	private void apagarUser() {
 			mostrarUtilizadores();
@@ -353,7 +392,7 @@ public class Gestor {
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
 				System.out.println("\n" + "Tipo de recurso:");
-				//mostrarTipo();
+				mostrarTipo();
 				System.out.print("Id do tipo de recurso: ");
 				int idTipo = scanner.nextInt();
 				Tipo tipo = session.get(Tipo.class, idTipo);
@@ -382,42 +421,92 @@ public class Gestor {
 					session.persist(localizacao);
 				}
 		
-				// Criando e persistindo o recurso
+
 				Recursos recurso = new Recursos();
 				recurso.setNome(nome);
 				recurso.setTelefone(telefone);
 				recurso.setLocalizacao(localizacao);
 				recurso.setTipo(tipo);
-				session.persist(recurso); // Persistindo o recurso primeiro
+				session.persist(recurso);
 		
-				// Criando um hospital se o tipo for hospital
 				if (recurso.getTipo().getTipo().equals("hospital")) {
 					Hospital hospital = new Hospital();
-					hospital.setNome(recurso.getNome()); // Copiando o nome
-					hospital.setTelefone(recurso.getTelefone()); // Copiando o telefone
-					hospital.setLocalizacao(localizacao); // Associe a mesma localização
-					hospital.setTipo(tipo); // Defina o tipo aqui
-		
-					System.out.print("Especialidades: ");
-					String especialidades = scanner.next();
-					hospital.setEspecialidades(especialidades);
+					hospital.setNome(recurso.getNome()); 
+					hospital.setTelefone(recurso.getTelefone());
+					hospital.setLocalizacao(localizacao);
+					hospital.setTipo(tipo);
+					String especialidades;
+					int vagas;
+					String custosAcrescidos;
+					String informacaoExtra;
+					do {
+						System.out.print("Especialidades: ");
+						especialidades = scanner.next();
+						hospital.setEspecialidades(especialidades);
+						System.out.print("Vagas: ");
+						vagas = scanner.nextInt();
+						hospital.setVagas(vagas);
+						System.out.print("Custos Acrescidos: ");
+						custosAcrescidos = scanner.next();
+						hospital.setCustosAcrescidos(custosAcrescidos);
+						System.out.print("Informação Extra: ");
+						informacaoExtra = scanner.next();
+						hospital.setInformacaoExtra(informacaoExtra);
+					} while (especialidades.length() < 4 || custosAcrescidos.length() < 4 || informacaoExtra.length() < 4);
+					
+					session.persist(hospital); // Persistindo o hospital
+				} else if(recurso.getTipo().getTipo().equals("abrigo")){
+					//vagas custos acrescidos informação extra
+					Abrigo abrigo = new Abrigo();
 					System.out.print("Vagas: ");
 					int vagas = scanner.nextInt();
-					hospital.setVagas(vagas);
+					abrigo.setVagas(vagas);
 					System.out.print("Custos Acrescidos: ");
 					String custosAcrescidos = scanner.next();
-					hospital.setCustosAcrescidos(custosAcrescidos);
+					abrigo.setCustosAcrescidos(custosAcrescidos);
 					System.out.print("Informação Extra: ");
 					String informacaoExtra = scanner.next();
-					hospital.setInformacaoExtra(informacaoExtra);
-					session.persist(hospital); // Persistindo o hospital
-				} 
-				// Continue da mesma forma para abrigo, banco de alimentos etc.
+					abrigo.setInformacaoExtra(informacaoExtra);
+					session.persist(abrigo);
+				} else if(recurso.getTipo().getTipo().equals("cozinha")){
+					//tipo de comida capacidade custos acrescidos informação extra
+					CozinhaComunitaria cozinha = new CozinhaComunitaria();
+					System.out.print("Tipo de Comida: ");
+					String tipoComida = scanner.next();
+					cozinha.setTipoComida(tipoComida);
+					System.out.print("Capacidade: ");
+					int capacidade = scanner.nextInt();
+					cozinha.setCapacidade(capacidade);
+					System.out.print("Custos Acrescidos: ");
+					String custosAcrescidos = scanner.next();
+					cozinha.setCustosAcrescidos(custosAcrescidos);
+					System.out.print("Informação Extra: ");
+					String informacaoExtra = scanner.next();
+					cozinha.setInformacaoExtra(informacaoExtra);
+					session.persist(cozinha);
+				} else if(recurso.getTipo().getTipo().equals("centro")){
+					//custos acrescidos informação extra
+					CentroTrocaRoupa centro = new CentroTrocaRoupa();
+					System.out.print("Custos Acrescidos: ");
+					String custosAcrescidos = scanner.next();
+					centro.setCustosAcrescidos(custosAcrescidos);
+					System.out.print("Informação Extra: ");
+					String informacaoExtra = scanner.next();
+					centro.setInformacaoExtra(informacaoExtra);
+					session.persist(centro);
+				} else if (recurso.getTipo().getTipo().equals("default")) {
+					DefaultType defaultType = new DefaultType();
+					System.out.print("Nome: ");
+					String name = scanner.next();
+					defaultType.setName(name);
+					defaultType.setTipo(tipo);
+					session.persist(defaultType);
+
+				}
 		
 				session.getTransaction().commit();
 			
-		}
-			
+		}			
 	private void eliminarRecurso() {
 			mostrarRecursos();
 			Session session = sessionFactory.openSession();
@@ -525,8 +614,7 @@ public class Gestor {
 			session.getTransaction().commit();
 			System.out.println("Recurso atualizado com sucesso!");
 			session.close();
-		}
-    
+		} 
 	public void login() {
 		System.out.print("Username: ");
 		String username = scanner.next();
@@ -632,7 +720,7 @@ public class Gestor {
 }
 private void pesquisarRecurso() {
     System.out.print("Tipo de recurso: ");
-    //mostrarTipo();
+    mostrarTipo();
     System.out.print("Id do tipo de recurso: ");
     int idTipo = scanner.nextInt();
     System.out.print("Cidade: ");
@@ -673,50 +761,36 @@ public void mostrarTipo() {
     System.out.println("| Lista de tipos |");
     System.out.println("-------------------------");
     Session session = sessionFactory.openSession();
-    Query<Tipo> query = session.createQuery("FROM Tipo", Tipo.class);
-    List<Tipo> tipos = query.getResultList();
-
+    Query<Tipo> queryTipos = session.createQuery("FROM Tipo", Tipo.class);
+    List<Tipo> tipos = queryTipos.getResultList();
     for (Tipo tipo : tipos) {
         System.out.println("Id: " + tipo.getIdTipo());
         System.out.println("Tipo: " + tipo.getTipo());
-        
-        if (tipo instanceof DefaultType) {
-            DefaultType defaultType = (DefaultType) tipo;
-            System.out.println("Name: " + defaultType.getName());
-            System.out.println("Location: " + defaultType.getLocation());
-            System.out.println("Contact: " + defaultType.getContact());
-            System.out.println("Extra Info: " + defaultType.getExtraInfo());
+        Query<DefaultType> query5 = session.createQuery("FROM DefaultType", DefaultType.class);
+        List<DefaultType> defaultTypes = query5.getResultList();
+        if (defaultTypes.size() > 0) {
+            System.out.println("Default Types:");
+            for (DefaultType defaultType : defaultTypes) {
+				System.out.println("Id: " + defaultType.getId());
+                System.out.println("Tipo: " + defaultType.getName());
+            }
         }
-
         System.out.println("-------------------------------");
     }
-
     session.close();
 }
-public void addDefaultType() { //new type class
+
+public void addDefaultType() {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
-    System.out.print("New type: ");
+    System.out.print("Tipo: ");
     String type = scanner.next();
-    System.out.print("Name: ");
-    String name = scanner.next();
-    System.out.print("Location: ");
-    String location = scanner.next();
-    System.out.print("Contact: ");
-    String contact = scanner.next();
-    System.out.print("Extra Info: ");
-    String extraInfo = scanner.next();
     DefaultType defaultType = new DefaultType();
-    defaultType.setTipo(type);   
-    defaultType.setName(name);
-    defaultType.setLocation(location);
-    defaultType.setContact(contact);
-    defaultType.setExtraInfo(extraInfo);
-    session.persist(defaultType);
+    defaultType.setName(type);
+    session.persist(defaultType);	
     session.getTransaction().commit();
     session.close();
 }
-
 public void eliminarTipo() {
 	mostrarTipo();
 	Session session = sessionFactory.openSession();

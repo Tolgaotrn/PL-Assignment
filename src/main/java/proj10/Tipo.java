@@ -45,4 +45,3 @@ public class Tipo { //type class
     }
 
 }
-

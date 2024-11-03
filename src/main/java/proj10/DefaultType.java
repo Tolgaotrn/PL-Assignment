@@ -1,35 +1,46 @@
 package proj10;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 @Table(name = "default_type")
-@PrimaryKeyJoinColumn(name = "id_tipo")
-public class DefaultType extends Tipo {
+public class DefaultType {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id; // ID único para a entrada
 
     @Column(name = "name", nullable = false, length = 255)
-    private String name;
+    private String name; // Nome associado ao tipo padrão
 
-    @Column(name = "location", length = 255)
-    private String location;
+    @ManyToOne
+    @JoinColumn(name = "id_tipo", foreignKey = @ForeignKey(name = "FK_tipo"))
+    private Tipo tipo; // Relação com a tabela Tipo
 
-    @Column(name = "contact", length = 255)
-    private String contact;
+    // Construtor padrão
+    public DefaultType() {}
 
-    @Column(name = "extra_info", columnDefinition = "TEXT")
-    private String extraInfo;
-
-    public DefaultType() {
+    // Construtor com parâmetros
+    public DefaultType(String name, Tipo tipo) {
+        this.name = name;
+        this.tipo = tipo;
     }
 
-    public DefaultType(String type, String name, String location, String contact, String extraInfo) {
-        super(type);
-        this.name = name;
-        this.location = location;
-        this.contact = contact;
-        this.extraInfo = extraInfo;
+    // Getters e Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -40,29 +51,11 @@ public class DefaultType extends Tipo {
         this.name = name;
     }
 
-    public String getLocation() {
-        return location;
+    public Tipo getTipo() {
+        return tipo;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
     }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public String getExtraInfo() {
-        return extraInfo;
-    }
-
-    public void setExtraInfo(String extraInfo) {
-        this.extraInfo = extraInfo;
-    }
-
-
 }

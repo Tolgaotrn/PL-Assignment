@@ -12,7 +12,7 @@
  <!-- Set the user name -->
  <property name="connection.username">root</property>
  <!-- Set the password write the pwd you choose when installing MySQL -->
- <property name="connection.password">rSS_G8g=qX+H7+~9$Z#q^5K53N^D4X@7</property>
+ <property name="connection.password">zezinho</property>
  <!-- Echo all executed SQL to stdout -->
  <property name="show_sql">false</property>
 <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
@@ -29,6 +29,5 @@
 <mapping class="proj10.Tipo"/>
 <mapping class="proj10.Localizacao"/>
 <mapping class="proj10.DefaultType"/>
-
  </session-factory>
 </hibernate-configuration>

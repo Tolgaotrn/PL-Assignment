@@ -18,14 +18,17 @@ public class Recursos {
     @Column(name = "telefone")
     private String telefone;
 
+    // Relacionamento com Localizacao (composição)
     @ManyToOne
     @JoinColumn(name = "id_localizacao", nullable = false)
     private Localizacao localizacao;
 
+    // Relacionamento com Tipo (composição)
     @ManyToOne
     @JoinColumn(name = "id_tipo", nullable = false)
     private Tipo tipo;
 
+    // Getters e Setters
 
     public int getIdRecurso() {
         return idRecurso;

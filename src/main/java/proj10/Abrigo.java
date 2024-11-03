@@ -16,7 +16,6 @@ public class Abrigo extends Recursos {
     @Column(name = "informacao_extra")
     private String informacaoExtra;
 
-    // ADICIONAR GETTERS E SETTERS
     public int getVagas() {
         return vagas;
     }

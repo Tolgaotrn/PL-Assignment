@@ -29,6 +29,5 @@
 <mapping class="proj10.Tipo"/>
 <mapping class="proj10.Localizacao"/>
 <mapping class="proj10.DefaultType"/>
-
  </session-factory>
 </hibernate-configuration>
