@@ -6,9 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.List;
 import org.hibernate.query.Query;
-import com.mysql.cj.xdevapi.Schema;
 
-import jakarta.persistence.Column;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -78,7 +76,7 @@ public class Gestor {
 			   System.out.println("A password deve ter pelo menos 6 caracteres");
 			   return valid=false;
 		   }else if (!password.matches(".[A-Z].")) {
-			   System.out.println("A password deve conter pelo menos uma letra maiúscula");
+			 System.out.println("A password deve conter pelo menos uma letra maiúscula");
 			   return valid=false;
 		   }else if (!password.matches(".[a-z].")) {
 			   System.out.println("A password deve conter pelo menos uma letra minúscula");
@@ -131,15 +129,15 @@ public class Gestor {
         validarUsername(username);
         System.out.print("\n");
 		String password;
-		do {
+		//do {
         System.out.print("Password:");
         password = scanner.next();
         System.out.print("\n");
-		} while (validarPassword(password) == false);
+		//} while (validarPassword(password) == false);
         
         System.out.print("Telemovel:");
         String telemovel = scanner.next();
-        validarTelemovel(telemovel);
+        //validarTelemovel(telemovel);
         System.out.print("\n");
 		u.setNome(nome);
         u.setUsername(username);
@@ -367,7 +365,7 @@ public class Gestor {
 			System.out.println("Id: " + utilizador.getIdUtilizador());
 			System.out.println("Nome: " + utilizador.getNome());
 			System.out.println("Username: " + utilizador.getUsername());
-			System.out.println("Password: " + "Devido ás normas de RGPD (Regulamento Geral de Proteção de Dados) não é possivel mostrar a password");
+			System.out.println("Password: " + "*****");
 			System.out.println("Telemovel: " + utilizador.getTelemovel());
 			System.out.println("Tipo de Utilizador: " + utilizador.getTipoUtilizador());
 			System.out.println("-------------------------------");
@@ -435,105 +433,135 @@ public class Gestor {
 					hospital.setTelefone(recurso.getTelefone());
 					hospital.setLocalizacao(localizacao);
 					hospital.setTipo(tipo);
+		
 					String especialidades;
+                    int vagas;
+                    String custosAcrescidos;
+                    String informacaoExtra;
+                    do {
+                        System.out.print("Especialidades: ");
+                        especialidades = scanner.next();
+                        hospital.setEspecialidades(especialidades);
+                        System.out.print("Vagas: ");
+                        vagas = scanner.nextInt();
+                        hospital.setVagas(vagas);
+                        System.out.print("Custos Acrescidos: ");
+                        custosAcrescidos = scanner.next();
+                        hospital.setCustosAcrescidos(custosAcrescidos);
+                        System.out.print("Informação Extra: ");
+                        informacaoExtra = scanner.next();
+                        hospital.setInformacaoExtra(informacaoExtra);
+                    } while (especialidades.length() < 1 || vagas < 0 || custosAcrescidos.length() < 1 || informacaoExtra.length() < 1);
+				} else if(recurso.getTipo().getTipo().equals("abrigo")){
+					
 					int vagas;
 					String custosAcrescidos;
 					String informacaoExtra;
 					do {
-						System.out.print("Especialidades: ");
-						especialidades = scanner.next();
-						hospital.setEspecialidades(especialidades);
+						//vagas custos acrescidos informação extra
+						Abrigo abrigo = new Abrigo();
 						System.out.print("Vagas: ");
 						vagas = scanner.nextInt();
-						hospital.setVagas(vagas);
+						abrigo.setVagas(vagas);
 						System.out.print("Custos Acrescidos: ");
 						custosAcrescidos = scanner.next();
-						hospital.setCustosAcrescidos(custosAcrescidos);
+						abrigo.setCustosAcrescidos(custosAcrescidos);
 						System.out.print("Informação Extra: ");
 						informacaoExtra = scanner.next();
-						hospital.setInformacaoExtra(informacaoExtra);
-					} while (especialidades.length() < 4 || custosAcrescidos.length() < 4 || informacaoExtra.length() < 4);
-					
-					session.persist(hospital); // Persistindo o hospital
-				} else if(recurso.getTipo().getTipo().equals("abrigo")){
-					//vagas custos acrescidos informação extra
-					Abrigo abrigo = new Abrigo();
-					System.out.print("Vagas: ");
-					int vagas = scanner.nextInt();
-					abrigo.setVagas(vagas);
-					System.out.print("Custos Acrescidos: ");
-					String custosAcrescidos = scanner.next();
-					abrigo.setCustosAcrescidos(custosAcrescidos);
-					System.out.print("Informação Extra: ");
-					String informacaoExtra = scanner.next();
-					abrigo.setInformacaoExtra(informacaoExtra);
-					session.persist(abrigo);
+						abrigo.setInformacaoExtra(informacaoExtra);
+						session.persist(abrigo);
+					}while (vagas < 0 || custosAcrescidos.length() < 1 || informacaoExtra.length() < 1);
 				} else if(recurso.getTipo().getTipo().equals("cozinha")){
-					//tipo de comida capacidade custos acrescidos informação extra
-					CozinhaComunitaria cozinha = new CozinhaComunitaria();
-					System.out.print("Tipo de Comida: ");
-					String tipoComida = scanner.next();
-					cozinha.setTipoComida(tipoComida);
-					System.out.print("Capacidade: ");
-					int capacidade = scanner.nextInt();
-					cozinha.setCapacidade(capacidade);
-					System.out.print("Custos Acrescidos: ");
-					String custosAcrescidos = scanner.next();
-					cozinha.setCustosAcrescidos(custosAcrescidos);
-					System.out.print("Informação Extra: ");
-					String informacaoExtra = scanner.next();
-					cozinha.setInformacaoExtra(informacaoExtra);
-					session.persist(cozinha);
+					
+					String tipoComida;
+					int capacidade;
+					String custosAcrescidos;
+					String informacaoExtra;
+					do {
+						//tipo de comida capacidade custos acrescidos informação extra
+						CozinhaComunitaria cozinha = new CozinhaComunitaria();
+						System.out.print("Tipo de Comida: ");
+						tipoComida = scanner.next();
+						cozinha.setTipoComida(tipoComida);
+						System.out.print("Capacidade: ");
+						capacidade = scanner.nextInt();
+						cozinha.setCapacidade(capacidade);
+						System.out.print("Custos Acrescidos: ");
+						custosAcrescidos = scanner.next();
+						cozinha.setCustosAcrescidos(custosAcrescidos);
+						System.out.print("Informação Extra: ");
+						informacaoExtra = scanner.next();
+						cozinha.setInformacaoExtra(informacaoExtra);
+						session.persist(cozinha);
+					}while (tipoComida.length() <1 || capacidade < 0 || custosAcrescidos.length() < 1 || informacaoExtra.length() < 1);
 				} else if(recurso.getTipo().getTipo().equals("centro")){
-					//custos acrescidos informação extra
-					CentroTrocaRoupa centro = new CentroTrocaRoupa();
-					System.out.print("Custos Acrescidos: ");
-					String custosAcrescidos = scanner.next();
-					centro.setCustosAcrescidos(custosAcrescidos);
-					System.out.print("Informação Extra: ");
-					String informacaoExtra = scanner.next();
-					centro.setInformacaoExtra(informacaoExtra);
-					session.persist(centro);
+					
+					String custosAcrescidos;
+					String informacaoExtra;
+					do {
+						//custos acrescidos informação extra
+						CentroTrocaRoupa centro = new CentroTrocaRoupa();
+						System.out.print("Custos Acrescidos: ");
+						custosAcrescidos = scanner.next();
+						centro.setCustosAcrescidos(custosAcrescidos);
+						System.out.print("Informação Extra: ");
+						informacaoExtra = scanner.next();
+						centro.setInformacaoExtra(informacaoExtra);
+						session.persist(centro);
+					}while (custosAcrescidos.length() < 1 || informacaoExtra.length() < 1);	 
 				} else if (recurso.getTipo().getTipo().equals("default")) {
-					DefaultType defaultType = new DefaultType();
-					System.out.print("Nome: ");
-					String name = scanner.next();
-					defaultType.setName(name);
-					defaultType.setTipo(tipo);
-					session.persist(defaultType);
-
+					
+					String name;
+					do {
+						DefaultType defaultType = new DefaultType();
+						System.out.print("Nome: ");
+						name = scanner.next();
+						defaultType.setName(name);
+						defaultType.setTipo(tipo);
+						session.persist(defaultType);
+					}while (nome.length() < 1);
 				}
 		
 				session.getTransaction().commit();
 			
 		}			
-	private void eliminarRecurso() {
-			mostrarRecursos();
-			Session session = sessionFactory.openSession();
-			session.beginTransaction();
-			System.out.print("Id do recurso a eliminar: ");
-			int id = scanner.nextInt();
-			Recursos recurso = session.get(Recursos.class, id);
-			session.delete(recurso);
-			session.getTransaction().commit();
-			System.out.println("Recurso eliminado com sucesso!");
-			session.close();
+		private void eliminarRecurso() {
+			int id;
+			do {
+				mostrarRecursos();
+				Session session = sessionFactory.openSession();
+				session.beginTransaction();
+				System.out.print("Id do recurso a eliminar: ");
+				id = scanner.nextInt();
+				Recursos recurso = session.get(Recursos.class, id);
+				session.delete(recurso);
+				session.getTransaction().commit();
+				System.out.println("Recurso eliminado com sucesso!");
+				session.close();
+			}while(id < 0);
 		}	
     private void editarRecursos() {
 			mostrarRecursos();
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
-			System.out.print("Id do recurso a editar: ");
-			int id = scanner.nextInt();
-			Recursos recurso = session.get(Recursos.class, id);
-			System.out.print("Nome: ");
-			String nome = scanner.next();
-			recurso.setNome(nome);
-			System.out.print("Telefone: ");
-			String telefone = scanner.next();
-			recurso.setTelefone(telefone);
-			System.out.print("Cidade: ");
-			String cidade = scanner.next();
+			int id;
+    		String nome;
+    		String telefone;
+    		String cidade;
+    		Recursos recurso;
+    		do {
+    			System.out.print("Id do recurso a editar: ");
+    			id = scanner.nextInt();
+    			recurso = session.get(Recursos.class, id);
+    			System.out.print("Nome: ");
+    			nome = scanner.next();
+    			recurso.setNome(nome);
+    			System.out.print("Telefone: ");
+    			telefone = scanner.next();
+    			recurso.setTelefone(telefone);
+    			System.out.print("Cidade: ");
+    			cidade = scanner.next();
+    		}while(id < 0 || nome.length() < 1 || telefone.length() < 1 || cidade.length() <1);;
 			//verificar se cidade existe na base de dados
 			Query<Localizacao> query = session.createQuery("FROM Localizacao WHERE cidade = :cidade", Localizacao.class);
 			query.setParameter("cidade", cidade);
@@ -641,13 +669,14 @@ public class Gestor {
     private void menuUtilizador(int idUtilizador) {
 		int opcao = -1;
 		do{
-			System.out.println("\n" + "--------------------");
+			System.out.println("\n" + "-------------------");
 		System.out.println("| Menu utilizador |");
-		System.out.println(  "--------------------");
+		System.out.println(  "-------------------");
 		System.out.println("1 - Ver recursos");
 		System.out.println("2 - Adicionar recurso a favoritos");
 		System.out.println("3 - Ver recursos favoritos");
-		System.out.println("0 - Sair" +"\n" + "Opção: ");
+		System.out.println("4 - Doar");
+		System.out.print("0 - Sair" +"\n" + "Opção: ");
 		opcao = scanner.nextInt();
 
 		switch (opcao) {
@@ -660,6 +689,10 @@ public class Gestor {
 			case 3:
 				mostrarFavoritos(idUtilizador);
 				break;
+			case 4:
+				doar(idUtilizador);
+				break;
+				
 			case 0:
 				break;
 			default:
@@ -670,15 +703,53 @@ public class Gestor {
 		
 		
 	}
+	public void doar(int idUtilizador) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		System.out.println("Quanto quer doar?");
+		int quantidade = scanner.nextInt();
+		System.out.println("Para que recurso quer doar?");
+		mostrarRecursos();
+		System.out.print("Id do recurso: ");
+		int idRecurso = scanner.nextInt();
+		Donation doacao = new Donation();
+		/*
+		 * @GeneratedValue(strategy = GenerationType.IDENTITY)
+			private int id;
+
+			@Column(name = "donor_name", nullable = false)
+			private String donorName;
+
+			@Column(name = "amount", nullable = false)
+			private double amount;
+
+			@Column(name = "date", nullable = false)
+			private Date date;
+		 */
+		doacao.setDonorid(idUtilizador);
+		doacao.setAmount(quantidade);
+		doacao.setDate(new java.util.Date());
+		session.persist(doacao);
+
+
+
+		
+		session.getTransaction().commit();
+		session.close();
+
+	}
 	private void mostrarFavoritos(int idUtilizador) {
 		Session session = sessionFactory.openSession();
 		Query<Favorito> query = session.createQuery("FROM Favorito WHERE idUtilizador = :idUtilizador", Favorito.class);
 		query.setParameter("idUtilizador", idUtilizador);
 		List<Favorito> favoritos = query.getResultList();
-		System.out.println("\n" + "-------------------------");
+		System.out.println("\n" + "----------------------");
 		System.out.println("| Lista de favoritos |");
-		System.out.println(  "-------------------------");
+		System.out.println(  "----------------------");
 		//ciclo para mostrar os favoritos
+		if (favoritos.size() == 0) {
+			System.out.println("Nenhum favorito encontrado.");
+		} else {
 		for (Favorito favorito : favoritos) {
 			Recursos recurso = session.get(Recursos.class, favorito.getIdRecurso());
 				System.out.println("Nome do Recurso: " + recurso.getNome());
@@ -688,6 +759,7 @@ public class Gestor {
 			
 			System.out.println("-------------------------------");
 		}
+	}
 
 	
 
@@ -757,27 +829,33 @@ private void pesquisarRecurso() {
 }
 
 public void mostrarTipo() {
-    System.out.println("\n-------------------------");
+    System.out.println("\n----------------");
     System.out.println("| Lista de tipos |");
-    System.out.println("-------------------------");
+    System.out.println("----------------");
     Session session = sessionFactory.openSession();
     Query<Tipo> queryTipos = session.createQuery("FROM Tipo", Tipo.class);
     List<Tipo> tipos = queryTipos.getResultList();
     for (Tipo tipo : tipos) {
         System.out.println("Id: " + tipo.getIdTipo());
         System.out.println("Tipo: " + tipo.getTipo());
-        Query<DefaultType> query5 = session.createQuery("FROM DefaultType", DefaultType.class);
-        List<DefaultType> defaultTypes = query5.getResultList();
-        if (defaultTypes.size() > 0) {
-            System.out.println("Default Types:");
-            for (DefaultType defaultType : defaultTypes) {
-				System.out.println("Id: " + defaultType.getId());
-                System.out.println("Tipo: " + defaultType.getName());
-            }
-        }
-        System.out.println("-------------------------------");
+        
     }
+        System.out.println("---------------------");
     session.close();
+}
+public void mostrarTipoDefault() {
+	System.out.println("\n----------------");
+    System.out.println("| Lista de tipos |");
+    System.out.println("----------------");
+	Session session = sessionFactory.openSession();
+	Query<DefaultType> query = session.createQuery("FROM DefaultType", DefaultType.class);
+	List<DefaultType> defaultTypes = query.getResultList();
+	for (DefaultType defaultType : defaultTypes) {
+		System.out.println("Id: " + defaultType.getId());
+		System.out.println("Tipo: " + defaultType.getName());
+        System.out.println("---------------------");
+	}
+	session.close();
 }
 
 public void addDefaultType() {
@@ -792,15 +870,48 @@ public void addDefaultType() {
     session.close();
 }
 public void eliminarTipo() {
-	mostrarTipo();
-	Session session = sessionFactory.openSession();
-	session.beginTransaction();
-	System.out.print("Id do tipo a eliminar: ");
-	int id = scanner.nextInt();
-	Tipo tipo = session.get(Tipo.class, id);
-	session.delete(tipo);
-	session.getTransaction().commit();
-	System.out.println("Tipo eliminado com sucesso!");
-	session.close();
+    mostrarTipo();
+    mostrarTipoDefault();
+    Session session = sessionFactory.openSession();
+    session.beginTransaction();
+
+    System.out.print("1- Eliminar tipo default\n2- Eliminar tipo padrão\nOpção: ");
+    int opcao = scanner.nextInt();
+    int id;
+
+    switch (opcao) {
+        case 1:
+            System.out.print("Id do tipo a eliminar: ");
+            id = scanner.nextInt();
+            DefaultType defaultType = session.get(DefaultType.class, id);
+
+            if (defaultType != null) {
+                session.remove(defaultType); 
+                System.out.println("Tipo Default eliminado com sucesso!");
+            } else {
+                System.out.println("Tipo Default com o ID fornecido não encontrado.");
+            }
+            break;
+
+        case 2:
+            System.out.print("Id do tipo a eliminar: ");
+            id = scanner.nextInt();
+            Tipo tipo = session.get(Tipo.class, id);
+
+            if (tipo != null) {
+                session.remove(tipo);
+                System.out.println("Tipo eliminado com sucesso!");
+            } else {
+                System.out.println("Tipo com o ID fornecido não encontrado.");
+            }
+            break;
+
+        default:
+            System.out.println("Opção inválida");
+            break;
+    }
+
+    session.getTransaction().commit();
+    session.close();
 }
 }
