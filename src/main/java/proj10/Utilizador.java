@@ -12,7 +12,6 @@ public class Utilizador {
     private String username;
     private String password;
     private String telemovel;
-    private String localizacao;
     private String tipo_utilizador;
 
     
@@ -25,13 +24,11 @@ public class Utilizador {
 		this.username = username;
 		this.password = password;
 		this.telemovel = telemovel;
-		this.localizacao = localizacao;
 		this.tipo_utilizador = tipoUtilizador;
 	}
 
     
     public Utilizador() {
-		// TODO Auto-generated constructor stub
 	}
 
 
@@ -73,13 +70,7 @@ public class Utilizador {
         this.telemovel = telemovel;
     }
 
-    public String getLocalizacao() {
-        return localizacao;
-    }
 
-    public void setLocalizacao(String localizacao) {
-        this.localizacao = localizacao;
-    }
 
     public String getTipoUtilizador() {
         return tipo_utilizador;
