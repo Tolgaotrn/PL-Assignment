@@ -1,15 +1,11 @@
 package proj10;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Hospitals")
-public class Hospital extends Resources {
-    @Column(name = "specialties")
-    private String specialties;
-
+@Table(name = "Shelters")
+public class Shelter extends Resources {
     @Column(name = "slots")
     private int slots;
 
@@ -18,15 +14,6 @@ public class Hospital extends Resources {
 
     @Column(name = "extra_information")
     private String extraInformation;
-
-    // IMPLEMENT GETTERS AND SETTERS
-    public String getSpecialties() {
-        return specialties;
-    }
-
-    public void setSpecialties(String specialties) {
-        this.specialties = specialties;
-    }
 
     public int getSlots() {
         return slots;
@@ -50,9 +37,5 @@ public class Hospital extends Resources {
 
     public void setExtraInformation(String extraInformation) {
         this.extraInformation = extraInformation;
-    }
-
-    public void setResourceId(int resourceId) {
-        super.setResourceId(resourceId);
     }
 }

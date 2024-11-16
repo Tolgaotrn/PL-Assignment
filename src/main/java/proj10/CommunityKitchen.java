@@ -5,13 +5,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Hospitals")
-public class Hospital extends Resources {
-    @Column(name = "specialties")
-    private String specialties;
+@Table(name = "Community_Kitchens")
+public class CommunityKitchen extends Resources {
+    @Column(name = "food_type")
+    private String foodType;
 
-    @Column(name = "slots")
-    private int slots;
+    @Column(name = "capacity")
+    private int capacity;
 
     @Column(name = "additional_costs")
     private String additionalCosts;
@@ -19,21 +19,21 @@ public class Hospital extends Resources {
     @Column(name = "extra_information")
     private String extraInformation;
 
-    // IMPLEMENT GETTERS AND SETTERS
-    public String getSpecialties() {
-        return specialties;
+    // ADD GETTERS AND SETTERS
+    public String getFoodType() {
+        return foodType;
     }
 
-    public void setSpecialties(String specialties) {
-        this.specialties = specialties;
+    public void setFoodType(String foodType) {
+        this.foodType = foodType;
     }
 
-    public int getSlots() {
-        return slots;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setSlots(int slots) {
-        this.slots = slots;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     public String getAdditionalCosts() {
@@ -50,9 +50,5 @@ public class Hospital extends Resources {
 
     public void setExtraInformation(String extraInformation) {
         this.extraInformation = extraInformation;
-    }
-
-    public void setResourceId(int resourceId) {
-        super.setResourceId(resourceId);
     }
 }

@@ -16,25 +16,25 @@ public class DefaultType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id; // ID único para a entrada
+    private int id; // Unique ID for the entry
 
     @Column(name = "name", nullable = false, length = 255)
-    private String name; // Nome associado ao tipo padrão
+    private String name; // Name associated with the default type
 
     @ManyToOne
-    @JoinColumn(name = "id_tipo", foreignKey = @ForeignKey(name = "FK_tipo"))
-    private Tipo tipo; // Relação com a tabela Tipo
+    @JoinColumn(name = "type_id", foreignKey = @ForeignKey(name = "FK_type"))
+    private ResourceType type; // Relationship with the ResourceType table
 
-    // Construtor padrão
+    // Default constructor
     public DefaultType() {}
 
-    // Construtor com parâmetros
-    public DefaultType(String name, Tipo tipo) {
+    // Constructor with parameters
+    public DefaultType(String name, ResourceType type) {
         this.name = name;
-        this.tipo = tipo;
+        this.type = type;
     }
 
-    // Getters e Setters
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -51,11 +51,11 @@ public class DefaultType {
         this.name = name;
     }
 
-    public Tipo getTipo() {
-        return tipo;
+    public ResourceType getType() {
+        return type;
     }
 
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
+    public void setType(ResourceType type) {
+        this.type = type;
     }
 }
