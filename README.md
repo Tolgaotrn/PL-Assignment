@@ -17,3 +17,26 @@
  * Acrescentar tabela localização (id_localizacao, cidade, distrito) e implementar herança para a tabela recursos (FEITO)
  * Acrescentar CRUD para a table Tipo
  */
+Recursos API Client
+
+        public void getRecursosTipoLocalizacao(int idtipo2, int idloc2) {
+                System.out.println("Buscando recursos do tipo " + idtipo2 + " e localização " + idloc2);
+        
+                String url = BASE_URL + "/recursos/tipo/" + idtipo2 + "/localizacao/" + idloc2;
+                RestTemplate restTemplate = new RestTemplate();
+
+                try {
+                    List<Recursos> recursos = restTemplate.exchange(url,HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<Recursos>>() {}
+                    ).getBody();
+
+                    if (recursos != null && !recursos.isEmpty()) {
+                        recursos.forEach(System.out::println);
+                    } else {
+                        System.out.println("Nenhum recurso encontrado para o tipo " + idtipo2 + " e localização " + idloc2);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erro ao buscar recursos: " + e.getMessage());
+                }
+            }
