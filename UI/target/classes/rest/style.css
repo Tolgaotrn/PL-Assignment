@@ -1,0 +1,79 @@
+.root {
+    -fx-background-color: #004643; /* Cor de fundo */
+    -fx-text-fill: #ffffff; /* Cor do texto principal (headline) */
+}
+
+.text {
+    -fx-fill: #ffffff; /* Cor branca */
+    -fx-font-size: 16px; /* Tamanho da fonte */
+    -fx-font-weight: bold; /* Texto em negrito */
+}
+
+.button {
+    -fx-text-fill: #ffffff; /* Cor do texto no botão */
+    -fx-font-size: 16px; /* Tamanho da fonte */
+    -fx-font-weight: bold; /* Texto em negrito */
+    -fx-background-color: #f9bc60; /* Cor de fundo para o botão */
+    -fx-border-color: transparent; /* Remover a borda */
+}
+
+.label {
+    -fx-text-fill: #abd1c6; /* Cor do texto secundário (parágrafos) */
+}
+
+.highlight {
+    -fx-background-color: #f9bc60; /* Cor de destaque */
+}
+
+.stroke {
+    -fx-border-color: #001e1d; /* Cor da borda ou "stroke" */
+}
+
+.secondary {
+    -fx-background-color: #abd1c6; /* Fundo para elementos secundários */
+}
+
+.tertiary {
+    -fx-background-color: #e16162; /* Cor terciária */
+}
+
+.main {
+    -fx-background-color: #e8e4e6; /* Fundo principal (elementos importantes) */
+}
+
+.text-field {
+    -fx-font-size: 16px; /* Tamanho da fonte */
+    -fx-font-weight: bold; /* Texto em negrito */
+    -fx-text-fill: #000000; /* Cor do texto (preto, por exemplo) */
+    -fx-background-color: #ffffff; /* Fundo branco */
+    -fx-border-color: #f9bc60; /* Cor da borda */
+    -fx-border-width: 2px; /* Espessura da borda */
+}
+
+
+/* Estilo da ListView */
+.list-view {
+    -fx-background-color: #004643; /* Cor de fundo */
+    -fx-border-color: #006d6a; /* Cor da borda */
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial"; /* Fonte */
+    -fx-text-fill: white; /* Cor do texto */
+    -fx-selection-bar: #f9bc60; /* Cor da seleção */
+}
+
+/* Estilo dos itens da ListView */
+.list-view .list-cell {
+    -fx-background-color: #006d6a; /* Cor do fundo de cada item */
+    -fx-text-fill: white; /* Cor do texto de cada item */
+    -fx-padding: 10px; /* Espaçamento interno */
+    -fx-font-size: 16px;
+}
+
+/* Quando o item está selecionado */
+.list-view .list-cell:filled:selected {
+    -fx-background-color: #f9bc60; /* Cor do fundo do item selecionado */
+    -fx-text-fill: black; /* Cor do texto do item selecionado */
+}
+
